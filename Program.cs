@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using chessAPI;
 using chessAPI.business.interfaces;
 using chessAPI.models.player;
+using chessAPI.models.game;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
 using Serilog.Events;
@@ -45,6 +46,26 @@ try
 
     app.MapPost("player", 
     [AllowAnonymous] async(IPlayerBusiness<int> bs, clsNewPlayer newPlayer) => Results.Ok(await bs.addPlayer(newPlayer)));
+
+    //Recuperacion (GET) de las entidades Game y Player
+    app.MapGet("player/{idplayer}", 
+    [AllowAnonymous] async(IPlayerBusiness<int> bs, int idplayer) => Results.Ok(await bs.getPlayer(idplayer)));
+
+    app.MapGet("game/{idgame}", 
+    [AllowAnonymous] async(IGameBusiness<int> bs, int idgame) => Results.Ok(await bs.getGame(idgame)));
+
+
+    //Actualización (PUT) de las entidades Game y Player
+    app.MapPut("player/{idplayer}",
+    [AllowAnonymous] async(IPlayerBusiness<int> bs, int idplayer, clsPlayer<int> updatePlayer) => Results.Ok(await bs.updatePlayer(updatePlayer)));
+
+    app.MapPut("game/{idgame}",
+    [AllowAnonymous] async(IGameBusiness<int> bs, int idgame, clsGame<int> updateGame) => Results.Ok(await bs.updateGame(updateGame)));
+
+
+    //Inserción (POST) de la entidad Game.
+    app.MapPost("game", 
+    [AllowAnonymous] async(IGameBusiness<int> bs, clsNewGame newGame) => Results.Ok(await bs.addGame(newGame)));
 
     app.Run();
 }
