@@ -65,7 +65,25 @@ try
 
     //Inserción (POST) de la entidad Game.
     app.MapPost("game", 
-    [AllowAnonymous] async(IGameBusiness<int> bs, clsNewGame newGame) => Results.Ok(await bs.addGame(newGame)));
+    [AllowAnonymous] async(IGameBusiness<int> bs, clsNewGame<int> newGame) => Results.Ok(await bs.addGame(newGame)));
+
+
+
+
+    //1. Endpoint tipo POST donde un integrante de un equipo iniciaría una partida
+    //Ya estan creado los teams, solo se debe iniciar el juego, en el ajedrez siempre inician las blancas.
+    app.MapPost("game/{id}",
+    [AllowAnonymous] async(IGameBusiness<int> bs, int grupoBlancos) => Results.Ok(await bs.InitGame(grupoBlancos,1)));
+
+    //2. Endpoint tipo PUT donde un integrante de un 2do equipo se adhiere a la partida para participar.
+    //Se sabe que les toca negras, entonces solo se envía el id del juego.
+    app.MapPut("game/{id}",
+    [AllowAnonymous] async(IGameBusiness<int> bs, int idGame, int grupoNegros) => Results.Ok(await bs.secondTeamGame(idGame,grupoNegros)));
+
+    //Se debe crear Team para realizar validación de los jugadores
+
+    //--Si al menos 1 de los jugadores del 2do equipo existe registrado en el 1er equipo, el API debe retornar un HTTP 400 (Bad Request)
+    //--En ambos endpoints validar si el id del equipo existe, sino existe, devolver un HTTP 404 (not found)
 
     app.Run();
 }

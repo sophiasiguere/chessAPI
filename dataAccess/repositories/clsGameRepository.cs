@@ -16,7 +16,7 @@ public sealed class clsGameRepository<TI, TC> : clsDataAccess<clsGameEntityModel
     {
     }
 
-    public async Task<TI> addGame(clsNewGame Game)
+    public async Task<TI> addGame(clsNewGame<TI> Game)
     {
         var p = new DynamicParameters();
         p.Add("STARTED", Game.started);
@@ -32,7 +32,7 @@ public sealed class clsGameRepository<TI, TC> : clsDataAccess<clsGameEntityModel
         return await getEntity(Gameid).ConfigureAwait(false);
     }
 
-    public async Task<IEnumerable<clsGameEntityModel<TI, TC>>> addGames(IEnumerable<clsNewGame> Games)
+    public async Task<IEnumerable<clsGameEntityModel<TI, TC>>> addGames(IEnumerable<clsNewGame<TI>> Games)
     {
         var r = new List<clsGameEntityModel<TI, TC>>(Games.Count());
         foreach (var Game in Games)

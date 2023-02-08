@@ -3,7 +3,7 @@ namespace chessAPI.models.game;
 public sealed class clsGame<TI>
     where TI : struct, IEquatable<TI>
 {
-    public clsGame(TI id, string started, bool turn, int winner,int whites, int blacks )
+    public clsGame(TI id, string started, bool turn, TI winner,TI whites, TI blacks )
     {
         this.id = id;
         this.started = started;
@@ -16,7 +16,7 @@ public sealed class clsGame<TI>
     public TI id { get; set; }
     public string started { get; set; }
     public bool turn { get; set; }
-    public int winner { get; set; }
-    public int whites { get; set; }
-    public int blacks { get; set; } 
+    public TI winner { get; set; }
+    public TI whites { get; set; }
+    public TI blacks { get; set; } 
 }
